@@ -1,0 +1,20 @@
+{
+  "format": "cadaclysm-blacksmith",
+  "version": 1,
+  "units": "mm",
+  "params": {},
+  "nodes": [
+    {"id": "box", "kind": "solid.cuboid", "meta": {"loom": {"x": 40, "y": 40}}, "x": 40, "y": 30, "z": 20},
+    {"id": "gold", "kind": "solid.edges_coloured", "meta": {"loom": {"x": 282, "y": 40}}, "solid": "box", "colour": "#d4a017"},
+    {"id": "edges", "kind": "solid.edges", "meta": {"loom": {"x": 524, "y": 250}}, "solid": "gold"},
+    {"id": "pick", "kind": "value", "meta": {"loom": {"node": "Item", "x": 766, "y": 250, "params": {"index": 5}, "wires": {"list": "edges"}}}, "value": "=item(edges, 5)"},
+    {"id": "blue", "kind": "solid.edges_coloured", "meta": {"loom": {"x": 1008, "y": 82}}, "solid": "gold", "colour": "#378add", "edges": "pick"}
+  ],
+  "commits": [
+    {"id": "c0", "parents": [], "ops": [], "inverses": []},
+    {"id": "c1", "parents": ["c0"], "ops": [{"op": "batch", "ops": [{"op": "add", "node": {"id": "box", "kind": "solid.cuboid", "meta": {"loom": {"node": "Solid.cuboid", "x": 40, "y": 40}}, "x": 40, "y": 30, "z": 20}}, {"op": "add", "node": {"id": "gold", "kind": "solid.edges_coloured", "meta": {"loom": {"node": "Solid.edges_coloured", "x": 282, "y": 40}}, "solid": "box", "colour": "#d4a017"}}, {"op": "add", "node": {"id": "edges", "kind": "solid.edges", "meta": {"loom": {"node": "Solid.edges", "x": 524, "y": 250}}, "solid": "gold"}}, {"op": "add", "node": {"id": "pick", "kind": "value", "meta": {"loom": {"node": "Item", "x": 766, "y": 250, "params": {"index": 5}, "wires": {"list": "edges"}}}, "value": "=item(edges, 5)"}}, {"op": "add", "node": {"id": "blue", "kind": "solid.edges_coloured", "meta": {"loom": {"node": "Solid.edges_coloured", "x": 1008, "y": 82}}, "solid": "gold", "colour": "#378add", "edges": "pick"}}]}], "inverses": [{"op": "batch", "ops": [{"op": "remove", "id": "blue"}, {"op": "remove", "id": "pick"}, {"op": "remove", "id": "edges"}, {"op": "remove", "id": "gold"}, {"op": "remove", "id": "box"}]}], "message": "A box with coloured edges"}
+  ],
+  "branches": {"main": "c1"},
+  "branch": "main",
+  "head": "c1"
+}

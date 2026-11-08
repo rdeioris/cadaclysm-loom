@@ -1,0 +1,51 @@
+{
+  "format": "loom-ui",
+  "about": "The loom's palette choices. The nodes themselves -- their fields, types, defaults, ranges and docs -- come from the kernel's document_kinds() at runtime; this file only says which kinds the palette shows, how it groups and names them, how its wires are coloured, and what a freshly placed node starts at. A key ending in '.' is a namespace, any other key one kind; the first match wins, and `hide` wins over `show`.",
+  "show": ["edges.", "frame.", "measure.section", "path.", "profile.", "selector.", "sheet.", "slant.", "solid.", "sweep_path."],
+  "hide": [
+    "forge.", "value",
+    "frame.axis", "frame.on_face", "frame.on_path", "frame.through_ends", "frame.tilted",
+    "profile.circumscribed_polygon", "profile.common", "profile.from_curves", "profile.path", "profile.pieces", "profile.text", "profile.trim",
+    "sheet.blend_sides", "sheet.body", "sheet.edge_surface", "sheet.fillet_surfaces", "sheet.join_sheets", "sheet.loft_curves", "sheet.match_side",
+    "sheet.n_sided_patch", "sheet.network_surface", "sheet.split_by_curve", "sheet.sweep_rail", "sheet.sweep_two_rails", "sheet.trim_by_curve",
+    "solid.body", "solid.extrude_between", "solid.extrude_open_between", "solid.fillet_varying", "solid.loft_through", "solid.lump", "solid.merge",
+    "solid.move", "solid.pipe", "solid.push_pull_faces", "solid.split_side", "solid.split_side_by_plane", "solid.split_side_by_profile",
+    "solid.sweep", "solid.sweep_open", "solid.with_tolerances"
+  ],
+  "groups": {
+    "profile.": "Profiles", "path.": "Profiles", "sweep_path.": "Sweeps", "slant.": "Frames", "frame.": "Frames",
+    "selector.": "Selectors", "solid.": "Solids", "sheet.": "Solids", "edges.": "Solids", "measure.": "Solids"
+  },
+  "labels": {
+    "path.start": "path", "solid.extrude_between_slants": "extrude between", "solid.extrude_open_between_slants": "extrude open between",
+    "solid.sweep_along": "sweep", "solid.sweep_open_along": "sweep open", "solid.pipe_along": "pipe", "solid.loft_sections": "loft through",
+    "frame.mid": "midplane", "edges.filter": "edges filter"
+  },
+  "records": {
+    "path.": "path", "sweep_path.": "sweeppath", "slant.": "slant", "selector.": "selector", "profile.section": "section",
+    "solid.select_face": "face", "solid.edges": "edges", "edges.filter": "edges"
+  },
+  "ports": {
+    "path.": {"path": "path"},
+    "sweep_path.": {"path": "sweeppath"},
+    "solid.pipe_along": {"path": "sweeppath"}, "solid.sweep_along": {"path": "sweeppath"}, "solid.sweep_open_along": {"path": "sweeppath"},
+    "solid.extrude_between_slants": {"bottom": "slant", "top": "slant"}, "solid.extrude_open_between_slants": {"bottom": "slant", "top": "slant"},
+    "solid.select_face": {"selector": "selector"},
+    "solid.face_frame": {"face": "face"}, "solid.coloured": {"face": "face"}, "edges.filter": {"face": "face", "edges": "edges"},
+    "solid.edges_coloured": {"edges": "edges"},
+    "solid.loft_sections": {"sections": "section"}
+  },
+  "start": {
+    "profile.rect": {"w": 10, "h": 10}, "profile.circle": {"r": 5}, "profile.slot": {"length": 20, "r": 3}, "profile.regular_polygon": {"r": 10},
+    "profile.star": {"outer": 10, "inner": 4}, "profile.offset": {"distance": 1}, "profile.round": {"radius": 1},
+    "profile.polygon": {"points": [[0, 0], [10, 0], [5, 8]]}, "profile.spline": {"points": [[0, 0], [5, 5], [10, 0]], "closed": false},
+    "solid.cuboid": {"x": 10, "y": 10, "z": 10}, "solid.cylinder": {"r": 5, "h": 10}, "solid.cone": {"r": 5, "h": 10}, "solid.sphere": {"r": 5},
+    "solid.torus": {"major": 10, "minor": 3}, "solid.wedge": {"x": 10, "y": 10, "z": 10, "top_x": 5}, "solid.pyramid": {"r": 5, "h": 10},
+    "solid.extrude": {"distance": 10}, "solid.extrude_open": {"distance": 10}, "solid.extrude_tapered": {"distance": 10}, "solid.extrude_open_tapered": {"distance": 10},
+    "solid.revolve_in_plane": {"to": [0, 1]}, "solid.revolve_open_in_plane": {"to": [0, 1]}, "solid.coil": {"pitch": 15, "turns": 3},
+    "solid.pipe_along": {"radius": 2}, "solid.extrude_faces": {"height": 10}, "solid.scaled": {"factor": 1}, "solid.rotate": {"angle": 90},
+    "measure.section": {"z": 0}, "solid.fillet": {"radius": 1}, "solid.chamfer": {"distance": 1}, "solid.push_pull": {"distance": 1},
+    "solid.refillet": {"radius": 1}, "solid.rechamfer": {"distance": 1}, "solid.shell": {"thickness": 1}, "solid.thicken": {"thickness": 1},
+    "frame.through": {"q": [1, 0, 0], "r": [0, 1, 0]}, "frame.offset": {"offset": 1}
+  }
+}

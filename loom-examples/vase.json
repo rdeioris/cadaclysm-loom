@@ -1,0 +1,27 @@
+{
+  "format": "cadaclysm-blacksmith",
+  "version": 1,
+  "units": "mm",
+  "params": {},
+  "nodes": [
+    {"id": "waist", "kind": "value", "meta": {"loom": {"node": "Number", "x": 40, "y": 40, "params": {"min": 18, "max": 36}}}, "value": 28},
+    {"id": "bulge", "kind": "value", "meta": {"loom": {"node": "Vector2", "x": 282, "y": 376, "params": {"x": 44, "y": 45}}}, "value": "=zip(44, 45)"},
+    {"id": "start", "kind": "path.start", "meta": {"loom": {"x": 524, "y": 40}}, "start": [0, 0]},
+    {"id": "foot", "kind": "path.line_to", "meta": {"loom": {"x": 766, "y": 40}}, "path": "start", "x": 24, "y": 0},
+    {"id": "up", "kind": "path.line_to", "meta": {"loom": {"x": 1008, "y": 40}}, "path": "foot", "x": "=waist", "y": 30},
+    {"id": "curve", "kind": "path.arc_to", "meta": {"loom": {"x": 1250, "y": 40}}, "path": "up", "x": "=waist", "y": 60, "centre": "=bulge", "ccw": false},
+    {"id": "lip", "kind": "path.line_to", "meta": {"loom": {"x": 1492, "y": 40}}, "path": "curve", "x": 16, "y": 70},
+    {"id": "rim", "kind": "path.line_to", "meta": {"loom": {"x": 1734, "y": 40}}, "path": "lip", "x": 0, "y": 70},
+    {"id": "back", "kind": "path.line_to", "meta": {"loom": {"x": 1976, "y": 40}}, "path": "rim", "x": 0, "y": 0},
+    {"id": "section", "kind": "path.end", "meta": {"loom": {"x": 2218, "y": 40}}, "path": "back"},
+    {"id": "turn", "kind": "value", "meta": {"loom": {"node": "Angle", "x": 2218, "y": 460, "params": {"degrees": 360}}}, "value": "=360 * 1 deg"},
+    {"id": "vase", "kind": "solid.revolve", "meta": {"loom": {"x": 2460, "y": 124}}, "profile": "section", "angle": "=turn"}
+  ],
+  "commits": [
+    {"id": "c0", "parents": [], "ops": [], "inverses": []},
+    {"id": "c1", "parents": ["c0"], "ops": [{"op": "batch", "ops": [{"op": "add", "node": {"id": "waist", "kind": "value", "meta": {"loom": {"node": "Number", "x": 40, "y": 40, "params": {"min": 18, "max": 36}}}, "value": 28}}, {"op": "add", "node": {"id": "bulge", "kind": "value", "meta": {"loom": {"node": "Vector2", "x": 282, "y": 376, "params": {"x": 44, "y": 45}}}, "value": "=zip(44, 45)"}}, {"op": "add", "node": {"id": "start", "kind": "path.start", "meta": {"loom": {"node": "Profile.path", "x": 524, "y": 40}}, "start": [0, 0]}}, {"op": "add", "node": {"id": "foot", "kind": "path.line_to", "meta": {"loom": {"node": "Path.line_to", "x": 766, "y": 40}}, "path": "start", "x": 24, "y": 0}}, {"op": "add", "node": {"id": "up", "kind": "path.line_to", "meta": {"loom": {"node": "Path.line_to", "x": 1008, "y": 40}}, "path": "foot", "x": "=waist", "y": 30}}, {"op": "add", "node": {"id": "curve", "kind": "path.arc_to", "meta": {"loom": {"node": "Path.arc_to", "x": 1250, "y": 40}}, "path": "up", "x": "=waist", "y": 60, "centre": "=bulge", "ccw": false}}, {"op": "add", "node": {"id": "lip", "kind": "path.line_to", "meta": {"loom": {"node": "Path.line_to", "x": 1492, "y": 40}}, "path": "curve", "x": 16, "y": 70}}, {"op": "add", "node": {"id": "rim", "kind": "path.line_to", "meta": {"loom": {"node": "Path.line_to", "x": 1734, "y": 40}}, "path": "lip", "x": 0, "y": 70}}, {"op": "add", "node": {"id": "back", "kind": "path.line_to", "meta": {"loom": {"node": "Path.line_to", "x": 1976, "y": 40}}, "path": "rim", "x": 0, "y": 0}}, {"op": "add", "node": {"id": "section", "kind": "path.end", "meta": {"loom": {"node": "Path.end", "x": 2218, "y": 40}}, "path": "back"}}, {"op": "add", "node": {"id": "z", "kind": "frame.axis", "meta": {"loom": {"node": "Axis", "x": 2218, "y": 292}}}}, {"op": "add", "node": {"id": "turn", "kind": "value", "meta": {"loom": {"node": "Angle", "x": 2218, "y": 460, "params": {"degrees": 360}}}, "value": "=360 * 1 deg"}}, {"op": "add", "node": {"id": "vase", "kind": "solid.revolve", "meta": {"loom": {"node": "Solid.revolve", "x": 2460, "y": 124}}, "profile": "section", "at": "=z.at", "axis": "=z.axis", "angle": "=turn"}}]}], "inverses": [{"op": "batch", "ops": [{"op": "remove", "id": "vase"}, {"op": "remove", "id": "turn"}, {"op": "remove", "id": "z"}, {"op": "remove", "id": "section"}, {"op": "remove", "id": "back"}, {"op": "remove", "id": "rim"}, {"op": "remove", "id": "lip"}, {"op": "remove", "id": "curve"}, {"op": "remove", "id": "up"}, {"op": "remove", "id": "foot"}, {"op": "remove", "id": "start"}, {"op": "remove", "id": "bulge"}, {"op": "remove", "id": "waist"}]}], "message": "A vase, turned"}
+  ],
+  "branches": {"main": "c1"},
+  "branch": "main",
+  "head": "c1"
+}
