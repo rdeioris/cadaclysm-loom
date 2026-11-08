@@ -196,12 +196,13 @@ async function run() {
                 const result = {}, keys = new Map();
                 for (const st of statuses) {
                     keys.set(st.id, st.key);
-                    let count = 0;
+                    let count = 0, flat = false;
                     if (st.state === "ok") {
                         const kind = wasm.cadaclysm_blacksmith_document_result_kind(doc, st.id);
-                        count = kind === "list" || kind === "value" ? countOf(wasm.cadaclysm_blacksmith_document_value(doc, st.id)) : 1;
+                        if (kind === "list" || kind === "value") ({ count, flat } = countOf(wasm.cadaclysm_blacksmith_document_value(doc, st.id)));
+                        else count = 1;
                     }
-                    result[st.id] = { state: st.state, error: st.error ?? (st.by ? `blocked by ${st.by}` : null), count };
+                    result[st.id] = { state: st.state, error: st.error ?? (st.by ? `blocked by ${st.by}` : null), count, flat };
                 }
                 const out = drawnOf(wasm, doc, keys, draw, lastItems, shown);
                 items = out.items;
@@ -222,9 +223,14 @@ async function run() {
     }
 }
 
-// How many items a node's value holds: a list's length, else one.
+// How many items a node's value holds: a list's length, else one. `flat`: an array of plain
+// numbers -- a list of numbers, or one frame, point or vector (twelve, three numbers), which
+// only the box's own output tells apart; a laced frame or point is an array of arrays.
 function countOf(json) {
-    try { const v = JSON.parse(json); return Array.isArray(v) ? v.length : 1; } catch { return 1; }
+    try {
+        const v = JSON.parse(json);
+        return Array.isArray(v) ? { count: v.length, flat: v.every((x) => typeof x === "number") } : { count: 1, flat: false };
+    } catch { return { count: 1, flat: false }; }
 }
 
 // A document to hold instead of the one here: refused in words when it is none.

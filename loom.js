@@ -595,6 +595,9 @@ function send() {
     if (nodes.length) setStatus("evaluating…", "");
 }
 
+// The wire types whose one value is an array of numbers.
+const NUMBERED = new Set(["frame", "vector2", "vector3"]);
+
 let lastResult = null;
 function applyResult(data) {
     lastResult = data;
@@ -605,7 +608,11 @@ function applyResult(data) {
         if (!r) continue;
         n.boxcolor = r.state === "ok" ? "#7CC48A" : r.state === "error" ? "#E5646A" : "#E0B25A";
         n.properties.error = r.error;
-        n.outputs[0].label = r.count > 1 ? `×${r.count}` : "";
+        // A flat array of numbers is one frame or vector on a box whose output is made of numbers,
+        // else a list (a Range; an Angle laced over one).
+        const out = REGISTRY.get(n.type.slice(PREFIX.length))?.output;
+        const many = r.count > 1 && (!r.flat || !out || out.list || !NUMBERED.has(out.type));
+        n.outputs[0].label = many ? `×${r.count}` : "";
         if (r.state === "error") errors++;
     }
     graph.setDirtyCanvas(true, true);
