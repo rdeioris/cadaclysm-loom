@@ -1,0 +1,21 @@
+{
+  "name": "cadaclysm-loom",
+  "version": "0.1.0",
+  "description": "A node editor for the cadaclysm CAD kernel, in the browser: every node one node of a blacksmith document.",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "repository": "github:rdeioris/cadaclysm-loom",
+  "homepage": "https://cadaclysm.blitter.studio/",
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "build": "esbuild loom-vendor.js --bundle --format=esm --minify --outfile=vendor/litegraph.js && node -e \"require('fs').copyFileSync('node_modules/litegraph.js/css/litegraph.css', 'vendor/litegraph.css')\"",
+    "start": "node scripts/serve.mjs",
+    "test": "node test/loom.mjs && node test/loom-show.mjs && node test/loom-script.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "fflate": "0.8.2",
+    "litegraph.js": "0.7.18"
+  }
+}
