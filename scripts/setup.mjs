@@ -10,11 +10,9 @@ import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { unzipSync } from "fflate";
 
-// TODO(0.14): the loom needs the View class, which the web package has from 0.14 on; until
-// 0.14 is released, set the package up from a local build with --zip or --pkg. Check the
-// asset's name against the 0.14 release when it ships.
+// The release whose web package the loom is built against.
 const VERSION = "0.14.0";
-const ASSET = `cadaclysm-${VERSION}-web.zip`;
+const ASSET = `cadaclysm-${VERSION}-web-pro.zip`;
 const URL = `https://github.com/rdeioris/cadaclysm-sdk/releases/download/v${VERSION}/${ASSET}`;
 // What the loom loads from the package.
 const NEEDED = ["cadaclysm.js", "cadaclysm_bg.wasm", "index.js", "view.js", "cadaclysm_blacksmith.js", "blacksmith.js"];

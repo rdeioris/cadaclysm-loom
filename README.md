@@ -59,15 +59,6 @@ WebAssembly module (the kernel and the View), its loader and the SDK's JavaScrip
 is fetched from the [SDK's releases](https://github.com/rdeioris/cadaclysm-sdk/releases) and
 never committed. The loom needs the `View` class, which the web package has from 0.14 on.
 
-> **TODO(0.14):** 0.14 is not released yet. Until it is, set the package up from a copy you
-> already have:
->
-> ```bash
-> npm run setup -- --zip path/to/cadaclysm-0.14.0-web.zip
-> ```
->
-> or from a local build's `pkg/` folder with `npm run setup -- --pkg path/to/pkg`.
-
 `npm run build` bundles LiteGraph into `vendor/`.
 
 ## Run
