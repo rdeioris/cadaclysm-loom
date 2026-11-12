@@ -13,8 +13,8 @@ import { graphToNodes, nodesToGraph, notDocument, pack, unpack } from "./loom-do
 import { EXAMPLES } from "./loom-examples.js";
 import { scriptOf } from "./loom-script.js";
 import { captionOf } from "./notebook-scene.js";
-import { attachViewer } from "./viewer-client.js";
-import { activationListen } from "./view-activation.js";
+import { attachViewer } from "./pkg/viewer-client.js";
+import { activationListen } from "./pkg/view-activation.js";
 import { filePicker, fileKeys } from "./file-picker.js";
 
 const $ = (id) => document.getElementById(id);

@@ -16,7 +16,7 @@ index.html ── loom.js ──────────────── LiteG
                 │  loom-nodes.js        palette: the kernel's node kinds + loom-ui.json
                 │  loom-doc.js          graph  <->  document nodes
                 │  loom-script.js       export as a Python / JavaScript script
-                │  viewer-host.js       the 3D view (an OffscreenCanvas in the worker)
+                │  pkg/viewer-client.js the 3D view (an OffscreenCanvas in the worker)
                 ▼
             loom-worker.js (module worker) ── pkg/  (the cadaclysm web package)
                 document_apply / document_evaluate, the View
@@ -40,7 +40,7 @@ index.html ── loom.js ──────────────── LiteG
   (`document_apply`) and come back from `document_evaluate`, together with each node's state
   and errors. A slider moved on one node re-shows only what changed downstream.
 - **Drawing**. The worker owns the package's `View` and draws through an OffscreenCanvas
-  (`viewer-host.js` on the page, `viewer-client.js` in the worker).
+  (`pkg/viewer-client.js` on the page, `pkg/viewer-host.js` in the worker).
 - **Script export** (`loom-script.js`) writes the document as a script of `doc.add(...)` calls,
   in Python for the SDK's Python package or in JavaScript for its JavaScript wrapper.
 
@@ -56,7 +56,10 @@ npm run build
 
 `npm run setup` puts the cadaclysm web package's `pkg/` folder here. That folder holds the
 WebAssembly module (the kernel and the View), its loader and the SDK's JavaScript wrapper. It
-is fetched from the [SDK's releases](https://github.com/rdeioris/cadaclysm-sdk/releases) and
+also holds the page modules that go with the View, which the loom imports from there instead
+of keeping copies: `viewer-host.js` and `viewer-client.js` (a View in a worker, drawing a
+canvas the page hands over), `view-activation.js` (tap the view to turn it on) and
+`view-show.js` (the palette, outline segments, framing). It is fetched from the [SDK's releases](https://github.com/rdeioris/cadaclysm-sdk/releases) and
 never committed. The loom needs the `View` class, which the web package has from 0.14 on.
 
 `npm run build` bundles LiteGraph into `vendor/`.
@@ -102,7 +105,6 @@ The tests run under Node against `pkg/`:
 | `loom-worker.js` | the module worker: evaluation and the View |
 | `loom-script.js` | script export |
 | `loom-show.js`, `notebook-scene.js`, `notebook-mesh.js` | what each node shows in the view |
-| `viewer-host.js`, `viewer-client.js`, `view-activation.js`, `forge-canvas.js` | the 3D view |
 | `file-picker.js` | opening documents and CAD files |
 | `loom-examples/` | the four examples, as documents |
 | `scripts/setup.mjs`, `scripts/serve.mjs` | fetch the package; a static server |

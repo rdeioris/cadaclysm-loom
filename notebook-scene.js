@@ -1,13 +1,11 @@
 // How a notebook cell's drawn items are named and coloured: the palette solids cycle
 // through, the outline colour a profile is drawn in, the pinched cross a non-manifold
 // vertex is drawn as, the caption and legend text over a view, and the words a file the
-// Open button refuses as a document is refused in. notebook-views.js
-// draws with these; the page's own colouring (loom-show.js) matches them by eye, not
-// by importing them.
-
-export const PALETTE = [[0.55, 0.62, 0.70], [0.72, 0.58, 0.44], [0.52, 0.66, 0.56], [0.68, 0.56, 0.68]];
-// A profile's outline: light, over the dark ground, as the renderer's `curves`.
-export const OUTLINE = [0.88, 0.9, 0.93];
+// Open button refuses as a document is refused in. The palette and the outline colour
+// are the web package's (pkg/view-show.js), which every page draws with; they are
+// re-exported here for the legend and the tests.
+import { PALETTE, OUTLINE } from "./pkg/view-show.js";
+export { PALETTE, OUTLINE };
 
 // A pinched vertex is drawn as a cross, its arms this fraction of the scene's radius.
 export const CROSS = 0.04;

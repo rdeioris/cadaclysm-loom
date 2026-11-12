@@ -35,8 +35,9 @@
 // The cadaclysm web package (`npm run setup` fetches it into ./pkg): its index.js loads
 // the module and re-exports cadaclysm.js, the kernel's calls and the View.
 import * as wasm from "./pkg/index.js";
-import { createViewerHost } from "./viewer-host.js";
-import { drawnOf, freeItems, sphereOf, keeps, diffShown } from "./loom-show.js";
+import { createViewerHost } from "./pkg/viewer-host.js";
+import { drawnOf, freeItems, diffShown } from "./loom-show.js";
+import { sphereOf, keeps } from "./pkg/view-show.js";
 import { opsBetween, notDocument } from "./loom-doc.js";
 
 const VIEW_ID = 1;

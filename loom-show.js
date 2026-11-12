@@ -3,53 +3,21 @@
 // profile a document node evaluated to, or an item of a node's list (`id#i`) -- the summary
 // the page's caption reads (captionOf, notebook-scene.js), what to hand the View
 // (`showSolid`'s handle and colour, or `showLines`' segments and colour), and its box, for
-// the keep-camera rule below.
+// the keep-camera rule (pkg/view-show.js `keeps`).
 //
 // Colours match what notebook-scene.js's sceneOf used to give a drawn item before the
-// View took the page over: its own colour where it has one, else PALETTE by its index
-// among every item drawn (solids and profiles counted alike, as sceneOf counted them); a
-// profile's outline in its own colour, else OUTLINE.
+// View took the page over: its own colour where it has one, else the palette's
+// (pkg/view-show.js paletteColour) by its index among every item drawn (solids and profiles
+// counted alike, as sceneOf counted them); a profile's outline in its own colour, else
+// OUTLINE. A solid's palette colour goes to `showSolid` as its `fill`, below all paint
+// (pkg/view-show.js says how).
 //
-// A solid's palette colour goes to `showSolid` as its `fill` -- below all paint, never over
-// it (the kernel's own scene of a solid): a face with neither paint
-// of its own nor the solid's colour draws in it, a face or edge painted apart keeps its
-// paint, and a solid with a colour of its own ignores it. (Not `colour`, which paints the
-// whole solid over its faces' and edges' own paint.)
-import { PALETTE, OUTLINE } from "./notebook-scene.js";
+// The drawing helpers every page shares -- the palette, segments, boxes, the frame and
+// the keep-camera rule -- are the web package's pkg/view-show.js; what is here is the
+// loom's own: a document's drawables, described and diffed against what the View already
+// shows.
+import { OUTLINE, paletteColour, segmentsOf, boxOfPoints } from "./pkg/view-show.js";
 import { RENDER_TOLERANCE, OUTLINE_STEPS } from "./notebook-mesh.js";
-
-// The palette's colour for the `index`th item drawn, as sceneOf used to pick it.
-export function paletteColour(index) {
-    return PALETTE[index % PALETTE.length];
-}
-
-// A polyline set (`{ points, offsets }`: three floats a point, `offsets` where each
-// polyline starts, one past the last at the end) as `showLines`' segments -- six floats a
-// segment, `x0 y0 z0 x1 y1 z1`, each consecutive pair of a polyline's points, as meshOf
-// (notebook-mesh.js) made the renderer's GL_LINES pairs.
-export function segmentsOf({ points, offsets }) {
-    let n = 0;
-    for (let i = 0; i + 1 < offsets.length; i++) n += Math.max(offsets[i + 1] - offsets[i] - 1, 0);
-    const out = new Float32Array(n * 6);
-    let k = 0;
-    for (let i = 0; i + 1 < offsets.length; i++) {
-        for (let j = offsets[i]; j + 1 < offsets[i + 1]; j++) {
-            out.set(points.subarray(3 * j, 3 * j + 6), k);
-            k += 6;
-        }
-    }
-    return out;
-}
-
-// The box of some segments, `{ lo, hi }`, or null for none.
-export function boxOfPoints(points) {
-    if (!points.length) return null;
-    const lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
-    for (let k = 0; k + 2 < points.length; k += 3) {
-        for (let a = 0; a < 3; a++) { lo[a] = Math.min(lo[a], points[k + a]); hi[a] = Math.max(hi[a], points[k + a]); }
-    }
-    return { lo, hi };
-}
 
 // A drawn thing's key across evaluations: the node's evaluation key (unchanged while nothing
 // it reads changed), the item's place in the node's list, and the colour it is drawn in.
@@ -161,27 +129,4 @@ export function drawnOf(wasm, doc, keys, draw, last = new Map(), shown = new Map
 // The solid handles `drawnOf` took, freed.
 export function freeItems(wasm, items) {
     for (const i of items) if (i.show.kind === "solid" && i.show.handle !== undefined) wasm.cadaclysm_blacksmith_solid_free(i.show.handle);
-}
-
-// The union of some boxes as sceneOf's frame used to be: its centre and radius (half the
-// longest side, at least 1e-6). Null when no box has a point -- nothing drawn.
-export function sphereOf(boxes) {
-    const lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
-    for (const b of boxes) {
-        if (!b) continue;
-        for (let a = 0; a < 3; a++) { lo[a] = Math.min(lo[a], b.lo[a]); hi[a] = Math.max(hi[a], b.hi[a]); }
-    }
-    if (!(lo[0] <= hi[0])) return null;
-    const centre = [0, 1, 2].map((a) => (lo[a] + hi[a]) / 2);
-    const radius = Math.max(Math.max(hi[0] - lo[0], hi[1] - lo[1], hi[2] - lo[2]) / 2, 1e-6);
-    return { centre, radius };
-}
-
-// The camera stays unless the part outgrew its frame, shrank past half of it or moved away
-// (the OpenSCAD editor's rule, moved here from loom.js). `framedAt` is the sphere last
-// framed, or null (never framed, nothing drawn since, or a new graph loaded).
-export function keeps(framedAt, sphere) {
-    if (!framedAt || !sphere) return false;
-    return sphere.radius < 2 * framedAt.radius && sphere.radius > framedAt.radius / 2
-        && Math.hypot(...sphere.centre.map((c, i) => c - framedAt.centre[i])) < framedAt.radius;
 }
